@@ -16,10 +16,30 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
+    {
+      "razak17/tailwind-fold.nvim",
+      opts = {},
+      dependencies = { "nvim-treesitter/nvim-treesitter" },
+      ft = { "html", "svelte", "astro", "vue", "typescriptreact", "php", "blade" },
+    },
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import/override with your plugins
     { import = "plugins" },
+
+    {
+      "sainnhe/sonokai",
+      lazy = false,
+      priority = 1000,
+      config = function()
+        vim.g.sonokai_style = "espresso" -- or 'shusia', 'maia', etc.
+        vim.g.sonokai_enable_italic = 1
+        vim.g.sonokai_better_performance = 1
+        vim.g.sonokai_transparent_background = 1
+        vim.g.sonokai_disable_italic_comment = 0
+        vim.g.sonokai_cursor = "auto"
+        vim.cmd([[colorscheme sonokai]])
+      end,
+    },
+
     {
       "IogaMaster/neocord",
       lazy = false,
@@ -29,28 +49,15 @@ require("lazy").setup({
     },
   },
   defaults = {
-    -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
-    -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
     lazy = false,
-    -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
-    -- have outdated releases, which may break your Neovim install.
-    version = false, -- always use the latest git commit
-    -- version = "*", -- try installing the latest stable version for plugins that support semver
+    version = false,
   },
-
-  install = { colorscheme = { "tokyonight", "habamax" } },
-  checker = {
-    enabled = true, -- check for plugin updates periodically
-    notify = false, -- notify on update
-  }, -- automatically check for plugin updates
+  install = { colorscheme = { "sonokai" } },
+  checker = { enabled = true, notify = false },
   performance = {
     rtp = {
-      -- disable some rtp plugins
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",
